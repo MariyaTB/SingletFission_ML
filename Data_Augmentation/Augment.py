@@ -71,7 +71,7 @@ def augmentation_by_fragment(list_of_smi: list, n: int):
     fragments = list(fragments)
     return combine_fragments(fragments, n)
 
-def filter_small_molecules(smiles_list, max_atoms=25):
+def filter_small_molecules(smiles_list, max_atoms=28):
     filtered_smiles = []
     for smi in smiles_list:
         mol = Chem.MolFromSmiles(smi)
