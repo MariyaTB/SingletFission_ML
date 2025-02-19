@@ -65,21 +65,18 @@ def main():
     finetune_clm(clm_model, valid_small_smiles, char_to_idx, device, epochs=20, batch_size=32, lr=0.0001)
     logging.info("CLM fine-tuning complete")
 
-    # Evaluate CLM
     logging.info("Evaluating CLM...")
     dataset = SMILESDataset(combined_smiles, char_to_idx)
     loader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=True)
     criterion = torch.nn.CrossEntropyLoss(ignore_index=char_to_idx['<PAD>'])
     evaluate_model(clm_model, loader, criterion, device)
 
-    # Generate new SMILES
     logging.info("Generating new SMILES...")
     new_smiles = [generate_smiles(clm_model, char_to_idx, idx_to_char) for _ in range(1000)]
     logging.info("New SMILES generated")
-    pd.DataFrame(new_smiles, columns=['SMILES']).to_csv('data/generated_smiles_17_02_2025(2).csv', index=False)
-    logging.info("Generated SMILES saved to 'data/generated_smiles_17_02_2025(2).csv'")
+    pd.DataFrame(new_smiles, columns=['SMILES']).to_csv('data/generated_smiles.csv', index=False)
+    logging.info("Generated SMILES saved to 'data/generated_smiles.csv'")
 
-    # Filter valid and unique SMILES
     logging.info("Filtering valid and unique SMILES...")
     valid_new_smiles = []
     seen = set(valid_small_smiles)
@@ -91,8 +88,8 @@ def main():
     logging.info(f"Generated {len(valid_new_smiles)} valid and unique SMILES")
 
 
-    pd.DataFrame(valid_new_smiles, columns=['SMILES']).to_csv('data/valid_unique_smiles_17_02_2025(2).csv', index=False)
-    logging.info("Valid and unique SMILES saved to 'data/valid_unique_smiles_17_02_2025(2).csv'")
+    pd.DataFrame(valid_new_smiles, columns=['SMILES']).to_csv('data/valid_unique_smiles.csv', index=False)
+    logging.info("Valid and unique SMILES saved to 'data/valid_unique_smiles.csv'")
 
 if __name__ == "__main__":
     main()
