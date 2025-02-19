@@ -82,7 +82,7 @@ def filter_small_molecules(smiles_list, max_atoms=25):
 core_smiles_df = pd.read_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\data\SMILE.csv')
 core_smiles_list = core_smiles_df['SMILES'].tolist()
 
-augmented_smiles = augmentation_by_fragment(core_smiles_list, 800)
+augmented_smiles = augmentation_by_fragment(core_smiles_list,700000)
 
 filtered_augmented_smiles = filter_small_molecules(augmented_smiles)
 
