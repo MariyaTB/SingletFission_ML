@@ -87,6 +87,6 @@ augmented_smiles = augmentation_by_fragment(core_smiles_list, 800)
 filtered_augmented_smiles = filter_small_molecules(augmented_smiles)
 
 augmented_df = pd.DataFrame(filtered_augmented_smiles, columns=['SMILES'])
-augmented_df.to_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\data\augmented_25Atoms_18_02_2025.csv', index=False)
+augmented_df.to_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\data\augmented_25Atoms_19_02_2025.csv', index=False)
 
 print(f"Generated {len(filtered_augmented_smiles)} augmented SMILES with up to 25 atoms.")
