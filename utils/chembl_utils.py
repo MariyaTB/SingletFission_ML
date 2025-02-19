@@ -3,7 +3,7 @@ from chembl_webresource_client.new_client import new_client
 from rdkit import Chem
 import logging
 
-def get_chembl_smiles(limit=75000):
+def get_chembl_smiles(limit=50000):
     molecule = new_client.molecule
     logging.info(f"Attempting to retrieve up to {limit} molecules from ChEMBL...")
 

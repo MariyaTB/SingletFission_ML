@@ -9,18 +9,15 @@ import pandas as pd
 from rdkit import Chem
 from tqdm import tqdm
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-N
+
 def main():
     logging.info("Starting main function")
-    # Set device to GPU if available
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logging.info(f"Using device: {device}")
 
-    # Fetch SMILES from ChEMBL
     logging.info("Fetching SMILES from ChEMBL...")
-    chembl_smiles = get_chembl_smiles(limit=75000) 
+    chembl_smiles = get_chembl_smiles(limit=50000) 
     logging.info(f"Collected {len(chembl_smiles)} SMILES from ChEMBL")
     valid_chembl = []
     for smi in chembl_smiles:
@@ -32,7 +29,6 @@ def main():
             logging.warning(f"Invalid SMILES string skipped: {smi}, error: {e}")
     logging.info(f"Collected {len(valid_chembl)} valid SMILES from ChEMBL")
 
-    # Load augmented dataset
     logging.info("Loading augmented dataset...")
     try:
         augmented_data = pd.read_csv('data/augmented.csv')
@@ -45,24 +41,20 @@ def main():
     valid_augmented = [Chem.MolToSmiles(Chem.MolFromSmiles(smi)) for smi in augmented_smiles if Chem.MolFromSmiles(smi)]
     logging.info(f"Collected {len(valid_augmented)} valid SMILES from augmented dataset")
 
-    # Combine ChEMBL and augmented datasets
     combined_smiles = valid_chembl + valid_augmented
     logging.info(f"Combined {len(combined_smiles)} valid SMILES from ChEMBL and augmented dataset")
 
-    # Create vocabulary
     logging.info("Creating vocabulary...")
     chars = sorted(list(set(''.join(combined_smiles)))) + ['<PAD>', '<EOS>']
     logging.info(f"Vocabulary size: {len(chars)}")
     char_to_idx = {c: i for i, c in enumerate(chars)}
     idx_to_char = {i: c for i, c in enumerate(chars)}
 
-    # Pre-train CLM on combined dataset
     logging.info("Pre-training CLM on combined dataset...")
     clm_model = CLM(vocab_size=len(chars), embed_dim=128, hidden_dim=256, n_layers=3, dropout=0.2).to(device)
     pretrain_clm(clm_model, combined_smiles, char_to_idx, device, epochs=5, batch_size=128, lr=0.001)
     logging.info("CLM pre-training complete")
 
-    # Fine-tune CLM on smaller dataset
     logging.info("Loading smaller dataset for fine-tuning...")
     small_dataset = pd.read_csv('data/SMILE.csv')
     small_smiles = small_dataset['SMILES'].tolist()
