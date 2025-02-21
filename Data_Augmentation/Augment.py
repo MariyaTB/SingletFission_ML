@@ -71,7 +71,7 @@ def augmentation_by_fragment(list_of_smi: list, n: int):
     fragments = list(fragments)
     return combine_fragments(fragments, n)
 
-def filter_small_molecules(smiles_list, max_atoms=28):
+def filter_small_molecules(smiles_list, max_atoms=30):
     filtered_smiles = []
     for smi in smiles_list:
         mol = Chem.MolFromSmiles(smi)
@@ -79,14 +79,40 @@ def filter_small_molecules(smiles_list, max_atoms=28):
             filtered_smiles.append(smi)
     return filtered_smiles
 
-core_smiles_df = pd.read_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\data\SMILE.csv')
+core_smiles_df = pd.read_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\Data_Augmentation\family1.csv')
 core_smiles_list = core_smiles_df['SMILES'].tolist()
 
-augmented_smiles = augmentation_by_fragment(core_smiles_list,650000)
+augmented_smiles = augmentation_by_fragment(core_smiles_list, 1000000)
 
 filtered_augmented_smiles = filter_small_molecules(augmented_smiles)
 
-augmented_df = pd.DataFrame(filtered_augmented_smiles, columns=['SMILES'])
-augmented_df.to_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\data\augmented.csv', index=False)
+unique_augmented_smiles = list(set(filtered_augmented_smiles))
 
-print(f"Generated {len(filtered_augmented_smiles)} augmented SMILES with up to 30 atoms.")
+augmented_df = pd.DataFrame(unique_augmented_smiles, columns=['SMILES'])
+augmented_df.to_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\Data_Augmentation\augmented_family1.csv', index=False)
+
+print(f"Generated {len(unique_augmented_smiles)} unique augmented SMILES with up to 25 atoms.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# filtered_augmented_smiles = filter_small_molecules(augmented_smiles)
+
+# augmented_df = pd.DataFrame(filtered_augmented_smiles, columns=['SMILES'])
+# augmented_df.to_csv(r'D:\My_Computer\Meh!!!!!!!\workspace\VIT_LAB\SingletFission_ML\Data_Augmentation\augmented_family1.csv', index=False)
+
+# print(f"Generated {len(filtered_augmented_smiles)} augmented SMILES with up to 25 atoms.")
