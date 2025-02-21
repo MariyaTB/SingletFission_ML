@@ -1,0 +1,6 @@
+SMILES
+Cc1cc(C)c(C2=CN(C)C=CC2=C=C=C2C=CN(C)C=C2c2c(C)cc(C)cc2C)c(C)c1
+C[Si](C)(C)c1ccc(C(=C=C=C(c2ccc([Si](C)(C)C)o2)c2ccc([Si](C)(C)C)o2)c2ccc([Si](C)(C)C)o2)o1
+C[Si](C)(C)C#CC(=C=C=C(C#C[Si](C)(C)C)C#C[Si](C)(C)C)C#C[Si](C)(C)C
+CN(C)c1ccc(C(=C=C=C2C=C(C(C)(C)C)C(=O)C(C(C)(C)C)=C2)c2ccc(N(C)C)cc2)cc1
+CCc1ccc(C(=C=C=C=C=C(c2ccc(CC)cc2)c2ccc(CC)cc2)c2ccc(CC)cc2)cc1

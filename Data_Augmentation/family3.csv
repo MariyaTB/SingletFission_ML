@@ -1,0 +1,15 @@
+SMILES
+c1ccc2cc3ccccc3cc2c1
+[O-][n+]1c2ccccc2[n+]([O-])c2ccccc21
+[O-][n+]1c2ccccc2nc2c3c(Cl)cccc3ccc21
+COc1cc(NCc2ccc3nc(N)nc(N)c3c2C)cc(OC)c1OC
+COc1ccc(Nc2n[n+]([O-])c3ccccc3[n+]2[O-])cc1
+CC(C)=Cc1c2[nH]c3ccccc3c2c(C=C(C)C)c2[nH]c3ccccc3c12
+CC(C)(C)OC(=O)Cn1nc2c(-c3cccs3)c3n[s+][n-]c3c(-c3cccs3)c2n1
+CC(C)[Si](C#Cc1c2c(c(C#C[Si](C(C)C)(C(C)C)C(C)C)c3nsnc13)N=S=N2)(C(C)C)C(C)C
+CC[Si](C#Cc1c2cc3ccccc3cc2c(C#C[Si](CC)(CC)CC)c2nsnc12)(CC)CC
+CC(C)[Si](C#Cc1c2cc3ccccc3cc2c(C#C[Si](C(C)C)(C(C)C)C(C)C)c2nsnc12)(C(C)C)C(C)C
+CC(C)[Si](C#Cc1c2nsnc2c(C#C[Si](C(C)C)(C(C)C)C(C)C)c2nc3c(F)c(F)c(F)c(F)c3nc12)(C(C)C)C(C)C
+CC(C)[Si](C#Cc1c2nsnc2c(C#C[Si](C(C)C)(C(C)C)C(C)C)c2nc3ccccc3nc12)(C(C)C)C(C)C
+c1ccc2c(c1)cc1cccc3cc4c(cc5cccc6cc7ccccc7c4c65)c2c13
+CC[Si](C#CC1=c2cc3c(cc2C=Cc2ccccc21)=C(C#C[Si](CC)(CC)CC)c1ccccc1C=C3)(CC)CC
