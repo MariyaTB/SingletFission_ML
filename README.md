@@ -1,4 +1,4 @@
-# Singlet Fission Machine Learning Project
+# SingletFission_ML
 
 ## Overview
 
