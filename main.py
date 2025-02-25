@@ -1,48 +1,56 @@
 import torch
 import logging
-from utils.chembl_utils import get_chembl_smiles
+import pandas as pd
+from rdkit import Chem
+from tqdm import tqdm
+import random
 from utils.dataset import SMILESDataset
 from models.clm_model import CLM
 from utils.train_utils import train_model, generate_smiles, evaluate_model
 from utils.clm_utils import pretrain_clm, finetune_clm
-import pandas as pd
-from rdkit import Chem
-from tqdm import tqdm
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def fetch_valid_smiles(smiles_list):
+    valid_smiles = []
+    for smi in smiles_list:
+        try:
+            mol = Chem.MolFromSmiles(smi)
+            if mol:
+                valid_smiles.append(Chem.MolToSmiles(mol))
+        except Exception as e:
+            logging.warning(f"Invalid SMILES string skipped: {smi}, error: {e}")
+    return valid_smiles
+
+def load_augmented_data(filepath):
+    try:
+        augmented_data = pd.read_csv(filepath)
+        logging.info("Augmented dataset loaded")
+        return augmented_data['SMILES'].tolist()
+    except FileNotFoundError:
+        logging.error("Augmented dataset not found. Please check the file path and ensure the file exists.")
+        return []
 
 def main():
     logging.info("Starting main function")
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logging.info(f"Using device: {device}")
 
-    logging.info("Fetching SMILES from ChEMBL...")
-    chembl_smiles = get_chembl_smiles(limit=50000) 
-    logging.info(f"Collected {len(chembl_smiles)} SMILES from ChEMBL")
-    valid_chembl = []
-    for smi in chembl_smiles:
-        try:
-            mol = Chem.MolFromSmiles(smi)
-            if mol:
-                valid_chembl.append(Chem.MolToSmiles(mol))
-        except Exception as e:
-            logging.warning(f"Invalid SMILES string skipped: {smi}, error: {e}")
-    logging.info(f"Collected {len(valid_chembl)} valid SMILES from ChEMBL")
+    logging.info("Loading GDB17 dataset...")
+    gdb17_data = pd.read_csv('data/GDB17.csv')
+    gdb17_smiles = gdb17_data['SMILES'].tolist()
+    random.shuffle(gdb17_smiles)
+    selected_gdb17_smiles = gdb17_smiles[:100000]
+    valid_gdb17 = fetch_valid_smiles(selected_gdb17_smiles)
+    logging.info(f"Collected {len(valid_gdb17)} valid SMILES from GDB17 dataset")
 
     logging.info("Loading augmented dataset...")
-    try:
-        augmented_data = pd.read_csv('data/augmented.csv')
-        logging.info("Augmented dataset loaded")
-    except FileNotFoundError:
-        logging.error("Augmented dataset not found. Please check the file path and ensure the file exists.")
-        return
-
-    augmented_smiles = augmented_data['SMILES'].tolist()
-    valid_augmented = [Chem.MolToSmiles(Chem.MolFromSmiles(smi)) for smi in augmented_smiles if Chem.MolFromSmiles(smi)]
+    augmented_smiles = load_augmented_data('data/augmented.csv')
+    valid_augmented = fetch_valid_smiles(augmented_smiles)
     logging.info(f"Collected {len(valid_augmented)} valid SMILES from augmented dataset")
 
-    combined_smiles = valid_chembl + valid_augmented
-    logging.info(f"Combined {len(combined_smiles)} valid SMILES from ChEMBL and augmented dataset")
+    combined_smiles = valid_gdb17 + valid_augmented
+    logging.info(f"Combined {len(combined_smiles)} valid SMILES from GDB17 and augmented dataset")
 
     logging.info("Creating vocabulary...")
     chars = sorted(list(set(''.join(combined_smiles)))) + ['<PAD>', '<EOS>']
@@ -58,7 +66,7 @@ def main():
     logging.info("Loading smaller dataset for fine-tuning...")
     small_dataset = pd.read_csv('data/SMILE.csv')
     small_smiles = small_dataset['SMILES'].tolist()
-    valid_small_smiles = [Chem.MolToSmiles(Chem.MolFromSmiles(smi)) for smi in small_smiles if Chem.MolFromSmiles(smi)]
+    valid_small_smiles = fetch_valid_smiles(small_smiles)
     logging.info(f"Loaded {len(valid_small_smiles)} valid SMILES from smaller dataset")
 
     logging.info("Fine-tuning CLM on smaller dataset...")
@@ -86,7 +94,6 @@ def main():
             seen.add(smi)
             valid_new_smiles.append(smi)
     logging.info(f"Generated {len(valid_new_smiles)} valid and unique SMILES")
-
 
     pd.DataFrame(valid_new_smiles, columns=['SMILES']).to_csv('data/valid_unique_smiles_20_02_2025.csv', index=False)
     logging.info("Valid and unique SMILES saved to 'data/valid_unique_smiles_20_02_2025.csv'")
