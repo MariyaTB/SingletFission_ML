@@ -42,7 +42,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, e
         logging.info(f'Epoch {epoch+1}, Avg Train Loss: {avg_loss:.4f}, Avg Val Loss: {val_loss:.4f}')
     return train_losses, val_losses
 
-def generate_smiles(model, char_to_idx, idx_to_char, start_char='C', max_length=100):
+def generate_smiles(model, char_to_idx, idx_to_char, start_char='C', max_length=85):
     model.eval()
     device = next(model.parameters()).device  
     with torch.no_grad():
