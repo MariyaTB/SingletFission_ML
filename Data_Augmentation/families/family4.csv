@@ -1,7 +1,0 @@
-SMILES
-CC(C)(C)C1=CC(=CC=CC=c2ccc(=C(C#N)C#N)s2)C=C(C(C)(C)C)O1
-CN(C)N=CC(C#N)=C(C#N)C=NN(C)C
-CC1(C)OC(=C(C#N)C#N)C(C#N)=C1C=CC=CC=CN1CCCC1
-CC1(C)OC(=C(C#N)C#N)C(C#N)=C1C=CC=CC=CC=C1N(CCO)c2ccccc2C1(C)C
-CC1(C)C=C(O)C=C(C=Cc2ccccc2Cl)C1
-CN(C)c1ccc(C#CC(C#Cc2ccc(N(C)C)cc2)=CC=C(C#N)C#N)cc1

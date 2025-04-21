@@ -1,9 +1,0 @@
-SMILES
-COC(=O)C1=C(c2cccs2)N(C)C(=O)C1=C1C(=O)N(C)C(c2cccs2)=C1C(=O)OC
-CCOC(=O)C1=C(c2ccccc2)N(C)C(=O)C1=C1C(=O)N(C)C(c2ccccc2)=C1C(=O)OCC
-Cc1cc(C)c(C2=CC(=C3C=C(c4c(C)cc(C)cc4C)N(C)C3=O)C(=O)N2C)c(C)c1
-CC(C)(C)[Si](C)(C)c1ccc(C2=CC(=C3C=C(c4ccc([Si](C)(C)C(C)(C)C)s4)SC3=O)C(=O)S2)s1
-CCCCSc1ccc(C2=CC(=C3C=C(c4ccc(SCCCC)s4)SC3=O)C(=O)S2)s1
-CCCCCc1ccc(C2=CC(=C3C=C(c4ccc(CCCCC)s4)SC3=O)C(=O)S2)s1
-O=C1OC(c2ccccc2)=CC1=C1C=C(c2ccccc2)OC1=O
-O=C1C(=C2C(=O)N(CCCCCCBr)c3ccccc32)c2ccccc2N1CCCCCCBr
