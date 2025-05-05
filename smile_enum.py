@@ -1,54 +1,39 @@
 import pandas as pd
 from rdkit import Chem
-from rdkit import RDLogger # To suppress RDKit warnings if needed
+from rdkit import RDLogger  
 import multiprocessing
 from functools import partial
 from tqdm import tqdm
 import time
 import os
-import argparse # For command-line arguments
+import argparse  
 
-# --- Configuration ---
+
 DEFAULT_INPUT_CSV = 'SMILE.csv'
-DEFAULT_OUTPUT_CSV = 'enumerated_validated_smiles.csv' # Changed default output name
-ENUMERATION_LEVEL = 100 # Number of SMILES to generate per input molecule
-NUM_WORKERS = max(1, os.cpu_count() - 2) # Use most cores, leave some for OS
+DEFAULT_OUTPUT_CSV = 'enumerated_validated_smiles.csv' 
+ENUMERATION_LEVEL = 150 
+NUM_WORKERS = max(1, os.cpu_count() - 2)  
 
-# Suppress RDKit warnings (optional, can be noisy)
 RDLogger.DisableLog('rdApp.*')
 
 def enumerate_single_smiles(input_smiles: str, num_enumerations: int) -> list[str]:
-    """
-    Generates a specified number of random SMILES strings for a single input SMILES.
-
-    Args:
-        input_smiles: The original SMILES string.
-        num_enumerations: The target number of random SMILES to generate.
-
-    Returns:
-        A list of generated random SMILES strings. Returns an empty list
-        if the input SMILES is invalid or enumeration fails.
-    """
+    
     enumerated = []
     try:
         mol = Chem.MolFromSmiles(input_smiles)
         if mol is not None:
-            # RDKit's MolToRandomSmilesVect handles the randomization internally
             smiles_vect = Chem.MolToRandomSmilesVect(mol, num_enumerations)
             enumerated.extend(list(smiles_vect))
         else:
             print(f"Warning: Could not parse original SMILES: {input_smiles}")
-            return [] # Return empty list for invalid input SMILES
+            return [] 
     except Exception as e:
         print(f"Error processing original SMILES '{input_smiles}': {e}")
-        return [] # Return empty list on error
+        return []  
     return enumerated
 
 def run_enumeration_and_validate(input_csv: str, output_csv: str, enumeration_level: int, num_workers: int):
-    """
-    Main function to load data, run parallel enumeration, validate enumerated SMILES,
-    and save results.
-    """
+   
     print(f"Starting SMILES enumeration and validation...")
     print(f"Input file: {input_csv}")
     print(f"Output file: {output_csv}")
@@ -57,11 +42,9 @@ def run_enumeration_and_validate(input_csv: str, output_csv: str, enumeration_le
 
     start_time = time.time()
 
-    # 1. Load Data
     try:
         df_input = pd.read_csv(input_csv)
         print(f"Loaded {len(df_input)} molecules from {input_csv}.")
-        # Ensure column names are correct (adjust if necessary)
         if 'SMILES' not in df_input.columns or 'V' not in df_input.columns:
             raise ValueError("Input CSV must contain 'SMILES' and 'V' columns.")
     except FileNotFoundError:
@@ -74,45 +57,41 @@ def run_enumeration_and_validate(input_csv: str, output_csv: str, enumeration_le
     original_smiles_list = df_input['SMILES'].tolist()
     original_velocities = df_input['V'].tolist()
 
-    # 2. Parallel Enumeration Setup
-    # Use partial to fix the 'num_enumerations' argument for the worker function
     worker_func = partial(enumerate_single_smiles, num_enumerations=enumeration_level)
 
-    results_list = [] # To store lists of enumerated SMILES for each input
+    results_list = [] 
     print(f"Starting parallel enumeration across {num_workers} cores...")
 
-    # Use multiprocessing Pool
+
     with multiprocessing.Pool(processes=num_workers) as pool:
-        # Use pool.imap for potentially better memory usage with large iterables,
-        # and tqdm for progress bar.
+        
         results_list = list(tqdm(pool.imap(worker_func, original_smiles_list),
                                  total=len(original_smiles_list),
                                  desc="Enumerating SMILES"))
 
     print("Parallel enumeration finished.")
 
-    # 3. Combine Results and Validate Enumerated SMILES
     print("Combining results and validating enumerated SMILES...")
     output_data = []
-    total_generated_count = 0 # Count before validation
-    total_valid_count = 0     # Count after validation
+    total_generated_count = 0  
+    total_valid_count = 0     
     invalid_enumerated_count = 0
     skipped_original_count = 0
 
     for i, enumerated_for_mol in enumerate(results_list):
         original_velocity = original_velocities[i]
-        if not enumerated_for_mol: # Handle cases where original SMILES was invalid or enum failed
+        if not enumerated_for_mol: 
             skipped_original_count += 1
-            # Optional: print(f"  Skipping original SMILES index {i} due to parsing/enumeration error.")
+            print(f"Warning: No enumerated SMILES generated for original SMILES: {original_smiles_list[i]}")
             continue
 
         total_generated_count += len(enumerated_for_mol)
 
         for enum_smiles in enumerated_for_mol:
-            # --- Validation Step ---
+
             mol_check = Chem.MolFromSmiles(enum_smiles)
             if mol_check is not None:
-                # SMILES is valid, add it to the output
+
                 output_data.append({'SMILES': enum_smiles, 'V': original_velocity})
                 total_valid_count += 1
             else:
@@ -129,7 +108,7 @@ def run_enumeration_and_validate(input_csv: str, output_csv: str, enumeration_le
     print(f"Final validated dataset size: {len(df_output)} rows.")
 
 
-    # 4. Save Output
+
     try:
         df_output.to_csv(output_csv, index=False)
         print(f"Successfully saved validated enumerated SMILES to {output_csv}.")
