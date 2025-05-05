@@ -82,33 +82,29 @@ def run_enumeration_and_validate(input_csv: str, output_csv: str, enumeration_le
     original_s_values = df_input['S'].tolist()
     original_t_values = df_input['T'].tolist()
 
-    # 2. Parallel Enumeration Setup
-    # Use partial to fix the 'num_enumerations' argument for the worker function
     worker_func = partial(enumerate_single_smiles, num_enumerations=enumeration_level)
 
-    results_list = [] # To store lists of enumerated SMILES for each input
+    results_list = [] 
     print(f"Starting parallel enumeration across {num_workers} cores...")
 
-    # Use multiprocessing Pool
     with multiprocessing.Pool(processes=num_workers) as pool:
-        # Use pool.imap for potentially better memory usage with large iterables,
-        # and tqdm for progress bar.
+       
         results_list = list(tqdm(pool.imap(worker_func, original_smiles_list),
                                  total=len(original_smiles_list),
                                  desc="Enumerating SMILES"))
 
     print("Parallel enumeration finished.")
 
-    # 3. Combine Results and Validate Enumerated SMILES
+   
     print("Combining results and validating enumerated SMILES...")
     output_data = []
-    total_generated_count = 0 # Count before validation
-    total_valid_count = 0     # Count after validation
+    total_generated_count = 0 
+    total_valid_count = 0     
     invalid_enumerated_count = 0
     skipped_original_count = 0
 
     for i, enumerated_for_mol in enumerate(tqdm(results_list, desc="Validating SMILES")):
-        original_smiles = original_smiles_list[i] # Keep track of original for reporting
+        original_smiles = original_smiles_list[i] 
         original_s = original_s_values[i]
         original_t = original_t_values[i]
 
