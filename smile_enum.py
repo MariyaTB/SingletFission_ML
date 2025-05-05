@@ -11,7 +11,7 @@ import argparse
 
 DEFAULT_INPUT_CSV = 'SMILE.csv'
 DEFAULT_OUTPUT_CSV = 'enumerated_validated_smiles.csv' 
-ENUMERATION_LEVEL = 150 
+ENUMERATION_LEVEL = 100 
 NUM_WORKERS = max(1, os.cpu_count() - 2)  
 
 RDLogger.DisableLog('rdApp.*')
