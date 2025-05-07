@@ -18,9 +18,9 @@ from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
 import matplotlib.pyplot as plt
 
-CSV_FILE = ''
-TARGET_COLUMN = ''
-SMILES_COLUMN = ''
+CSV_FILE = 'enumerated_validated_SF_smiles.csv'
+TARGET_COLUMN = 'SF'
+SMILES_COLUMN = 'SMILES'
 TEST_SIZE = 0.2
 VALID_SIZE = 0.1
 RANDOM_STATE = 42
