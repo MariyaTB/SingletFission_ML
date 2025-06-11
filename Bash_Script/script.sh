@@ -16,7 +16,6 @@ for f in $(find . -name "*.gjf"); do
                 mv $(basename -s .gjf $f).log '<file location>'$(basename -s .gjf $f)
                 mv $(basename -s .gjf $f).chk '<file location>'$(basename -s .gjf $f)
                 mv $(basename -s .gjf $f).gjf '<file location>'$(basename -s .gjf $f)
-                mv $(basename -s .gjf $f).fchk '<file location>'$(basename -s .gjf $f)
                 echo "\n${YELLOW}$filename.gjf${RESTORE}, ${YELLOW}$filename.log${RESTORE}, ${YELLOW}$filename.chk${RESTORE} & ${YELLOW}$filename.fchk${RESTORE} files have been moved into the ${CYAN}output/success/$filename${RESTORE} folder\n-----------------\n"
         else
 		mkdir'<file location>'$(basename -s .gjf $f)
@@ -24,7 +23,6 @@ for f in $(find . -name "*.gjf"); do
                 mv $(basename -s .gjf $f).log '<file location>'$(basename -s .gjf $f)
                 mv $(basename -s .gjf $f).chk '<file location>'$(basename -s .gjf $f)
                 mv $(basename -s .gjf $f).gjf '<file location>'$(basename -s .gjf $f)
-                mv $(basename -s .gjf $f).fchk '<file location>'$(basename -s .gjf $f)
                 echo "\n${YELLOW}$filename.gjf${RESTORE}, ${YELLOW}$filename.log${RESTORE}, ${YELLOW}$filename.chk${RESTORE} & ${YELLOW}$filename.fchk${RESTORE} files have been moved into the ${CYAN}output/error/$filename${RESTORE} folder\n-----------------\n"
         fi
 	sleep 10
