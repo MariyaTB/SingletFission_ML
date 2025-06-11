@@ -1,3 +1,4 @@
+#!/bin/bash
 RESTORE=$(echo '\033[0m')
 RED=$(echo '\033[00;31m')
 GREEN=$(echo '\033[00;32m')
