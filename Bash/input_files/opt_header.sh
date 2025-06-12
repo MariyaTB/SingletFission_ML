@@ -4,7 +4,8 @@ for file in *; do
     [[ ! -f "$file" ]] && continue
     { 
         echo "# opt b3lyp/6-31g"
-        tail -n +3 "$file"
+        echo ""
+        tail -n +4 "$file"
     } > "$file.tmp" && mv "$file.tmp" "$file"
 done
 
