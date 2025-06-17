@@ -84,7 +84,7 @@ def augmentation_by_fragment(list_of_smi, n: int):
     print('get {} fragments'.format(len(fragments)))
     return combine_fragments(fragments, n)
 
-def generate_augmented_smiles(file_path, target_count=300000, max_folds=10, fragment_multiplier=10):
+def generate_augmented_smiles(file_path, target_count=400000, max_folds=10, fragment_multiplier=10):
     original_smis = load_smiles_from_csv(file_path)
     print(f'Loaded {len(original_smis)} original SMILES.')
 
@@ -110,5 +110,5 @@ if __name__ == "__main__":
     print(f'Process completed in {end_time - start_time:.2f} seconds.')
 
     output_df = pd.DataFrame({'SMILES': augmented_smis})
-    output_df.to_csv('augmented_SMILE_09_06_2025.csv', index=False)
+    output_df.to_csv('augmented_SMILE_17_06_2025.csv', index=False)
     print('Augmented SMILES saved to augmented_SMILE.csv')
