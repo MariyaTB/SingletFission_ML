@@ -8,9 +8,9 @@ import time
 import os
 import argparse
 
-DEFAULT_INPUT_CSV = 'SMILES.csv'
-DEFAULT_OUTPUT_CSV = 'enumerated_validated_SF_smiles_20.csv'
-ENUMERATION_LEVEL = 20
+DEFAULT_INPUT_CSV = 'Smile_enum/SMILES.csv'
+DEFAULT_OUTPUT_CSV = 'Smile_enum/enumerated_validated_SF_smiles_5.csv'
+ENUMERATION_LEVEL = 5
 NUM_WORKERS = max(1, os.cpu_count() - 2)
 
 RDLogger.DisableLog('rdApp.*')
