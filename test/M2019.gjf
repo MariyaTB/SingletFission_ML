@@ -1,7 +1,11 @@
+# td=(50-50,nstates=3) b3lyp/6-31g
+
+M2019 TD calculation
+0 1
 !Put Keywords Here, check Charge and Multiplicity.
 #
 
- .\M2019_log.log
+ M2019.log
 
 0  1
 C           0.79795         4.70377         0.69342
