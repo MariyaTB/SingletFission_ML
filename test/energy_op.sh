@@ -1,6 +1,5 @@
 #!/bin/bash
 
- 
 HEADER="# td=(50-50,nstates=3) b3lyp/6-31g"
 
 for log in *.log; do
@@ -19,4 +18,5 @@ for log in *.log; do
         cat "$gjf"
     } > "$tmpfile"
     mv "$tmpfile" "$gjf"
+
 done

@@ -1,11 +1,11 @@
 # td=(50-50,nstates=3) b3lyp/6-31g
 
-M1610 TD calculation
+M1610 (1) TD calculation
 0 1
 !Put Keywords Here, check Charge and Multiplicity.
 #
 
- M1610.log
+ M1610 (1).log
 
 0  1
 C           3.36711         4.28645         0.35413
