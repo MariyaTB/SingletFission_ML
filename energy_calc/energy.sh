@@ -3,14 +3,14 @@
 csv="excitation_energies.csv"
 
 if [ ! -f "$csv" ]; then
-    echo "filename,triplet_eV,singlet_eV" > "$csv"
+    echo "filename,triplet1_eV,triplet2_eV,singlet1_eV" > "$csv"
 fi
 
 for file in *.log; do
     if ! grep -q "^$file," "$csv"; then
-        triplet=$(grep -m 1 "Excited State" "$file" | grep "Triplet-A" | awk '{for(i=1;i<=NF;i++) if($i=="Triplet-A") print $(i+1)}')
-        triplet=$(grep -m 2 "Excited State" "$file" | grep "Triplet-A" | awk '{for(i=1;i<=NF;i++) if($i=="Triplet-A") print $(i+1)}')
-        singlet=$(grep "Excited State" "$file" | grep "Singlet-A" | awk '{for(i=1;i<=NF;i++) if($i=="Singlet-A") print $(i+1)}' | head -n 1)
-        echo "$file,$triplet1,$triplet1,$singlet" >> "$csv"
+        triplet1=$(grep "Excited State" "$file" | grep "Triplet-A" | awk '{for(i=1;i<=NF;i++) if($i=="Triplet-A") print $(i+1)}' | sed -n 1p)
+        triplet2=$(grep "Excited State" "$file" | grep "Triplet-A" | awk '{for(i=1;i<=NF;i++) if($i=="Triplet-A") print $(i+1)}' | sed -n 2p)
+        singlet1=$(grep "Excited State" "$file" | grep "Singlet-A" | awk '{for(i=1;i<=NF;i++) if($i=="Singlet-A") print $(i+1)}' | sed -n 1p)
+        echo "$file,$triplet1,$triplet2,$singlet1" >> "$csv"
     fi
 done
