@@ -1,7 +1,7 @@
 import pandas as pd
 
 df_a = pd.read_csv('duplicate_data_clean/valid_unique_smiles_28_02_2025.csv')
-df_b = pd.read_csv('duplicate_data_clean/valid_unique_smiles_01_04_2025.csv')
+df_b = pd.read_csv('duplicate_data_clean/final_filtered_smiles.csv')
 
 smiles_col = df_a.columns[1]
 
