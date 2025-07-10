@@ -58,7 +58,7 @@ def main():
     logging.info(f"Collected {len(valid_gdb17)} valid SMILES from GDB17 dataset")
 
     logging.info("Loading augmented dataset...")
-    augmented_smiles = load_augmented_data('data/augmented_SMILE_400K.csv')
+    augmented_smiles = load_augmented_data('data/augmented_SMILE_400K.csv')#Augmented dataset path
     valid_augmented = fetch_valid_smiles(augmented_smiles)
     logging.info(f"Collected {len(valid_augmented)} valid SMILES from augmented dataset")
 
@@ -90,7 +90,7 @@ def main():
 
 
     logging.info("Loading smaller dataset for fine-tuning...")
-    small_dataset = pd.read_csv('Smile_enum/output_SMILES.csv')
+    small_dataset = pd.read_csv('data/SMILES.csv') #core dataset
     small_smiles = small_dataset['SMILES'].tolist()
     valid_small_smiles = fetch_valid_smiles(small_smiles)
     logging.info(f"Loaded {len(valid_small_smiles)} valid SMILES from smaller dataset")
