@@ -58,7 +58,7 @@ def main():
     logging.info(f"Collected {len(valid_gdb17)} valid SMILES from GDB17 dataset")
 
     logging.info("Loading augmented dataset...")
-    augmented_smiles = load_augmented_data('data/augmented_SMILE_400K.csv')#Augmented dataset path
+    augmented_smiles = load_augmented_data('augmented_SMILE.csv')#Augmented dataset path
     valid_augmented = fetch_valid_smiles(augmented_smiles)
     logging.info(f"Collected {len(valid_augmented)} valid SMILES from augmented dataset")
 
